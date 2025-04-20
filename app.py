@@ -84,5 +84,10 @@ if st.button('Predict Price'):
     ppi = (x_resolution+y_resolution)**0.5/inch
     query = np.array([brand,type,cpu,ram,gpu,os,weigth,touchscreen,ips,ppi,speed,hdd,ssd])
     query=query.reshape(1,13)
-    prediction =pipe.predict(query)
+    try:
+        # Make prediction
+        prediction = pipe.predict(query)
+        st.success(f"Estimated Laptop Price: ₹{int(prediction[0])}")
+    except Exception as e:
+        st.error(f"Error during prediction: {e}")
     st.title(f'Price For Laptop Will Be Rs. {np.round(np.exp(prediction[0]),0)}')
