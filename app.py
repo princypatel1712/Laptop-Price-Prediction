@@ -1,43 +1,4 @@
-import pandas as pd
-import numpy as np
-import pickle
 
-from sklearn.linear_model import LinearRegression
-from sklearn.pipeline import Pipeline
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
-
-# Load your cleaned dataset
-df = pd.read_csv('clean_data.csv')
-
-# Define features and target
-X = df.drop('Price', axis=1)
-y = np.log(df['Price'])  # Assuming you used log prices for prediction
-
-# Categorical and numerical columns
-categorical_features = ['Company', 'TypeName', 'Cpu', 'Gpu', 'OpSys']
-numerical_features = ['Ram', 'Weight', 'TouchScreen', 'IPS', 'ppi', 'Speed', 'HDD', 'SSD']
-
-# Preprocessor
-preprocessor = ColumnTransformer([
-    ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features),
-    ('num', StandardScaler(), numerical_features)
-])
-
-# Build pipeline
-pipe = Pipeline([
-    ('preprocessing', preprocessor),
-    ('model', LinearRegression())
-])
-
-# Train pipeline
-pipe.fit(X, y)
-
-# Save pipeline
-with open('model.pkl', 'wb') as f:
-    pickle.dump(pipe, f)
-
-print("Model pipeline saved successfully.")
 
 import streamlit as st
 import pickle
