@@ -81,20 +81,20 @@ if st.button('Predict Price'):
 
         # Prepare input as DataFrame (not NumPy array!)
         input_df = pd.DataFrame([{
-            'Company': brand,
-            'TypeName': type,
-            'Cpu': cpu,
-            'Ram': ram,
-            'Gpu': gpu,
-            'OpSys': os,
-            'Weight': weigth,
-            'Touchscreen': touchscreen_val,
-            'Ips': ips_val,
-            'Ppi': ppi,
-            'Speed': speed,
-            'HDD': hdd,
-            'SSD': ssd
-        }])
+    'Company': brand,
+    'TypeName': type,
+    'Cpu': cpu,
+    'Ram': ram,
+    'Gpu': gpu,
+    'OpSys': os,
+    'Weight': weigth,
+    'TouchScreen': touchscreen_val,   # ← Fixed
+    'IPS': ips_val,                  # ← Fixed
+    'ppi': ppi,                      # ← Fixed
+    'Speed': speed,
+    'HDD': hdd,
+    'SSD': ssd
+}])
 
         # Predict (assuming model is trained on log prices)
         prediction = pipe.predict(input_df)
