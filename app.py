@@ -2,10 +2,7 @@ import streamlit as st
 import pickle
 import pandas as pd
 import numpy as np
-import streamlit as st
-import pickle
-import pandas as pd
-import numpy as np
+import sklearn 
 import os
 
 # Check if model file exists
