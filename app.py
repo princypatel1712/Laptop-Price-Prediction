@@ -5,29 +5,9 @@ import numpy as np
 import sklearn 
 import os
 
-# Check if model file exists
-try:
-    if os.path.exists('model.pkl'):
-        pipe = pickle.load(open('model.pkl', 'rb'))
-    else:
-        st.error("Error: model.pkl file not found in the current directory.")
-        st.stop()
-        
-    if os.path.exists('clean_data.csv'):
-        df = pd.read_csv('clean_data.csv')
-    else:
-        st.error("Error: clean_data.csv file not found in the current directory.")
-        st.stop()
-except Exception as e:
-    st.error(f"Error loading required files: {e}")
-    st.stop()
+pipe = pickle.load(open('model.pkl','rb'))
+df = pd.read_csv('clean_data.csv')
 # Background image using CSS
-import streamlit as st
-
-# Display centered image in the middle of the app
-import streamlit as st
-
-# Set full-screen background image with better quality handling
 st.markdown(
     """
     <style>
