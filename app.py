@@ -68,26 +68,40 @@ os =st.selectbox('OS',df['OpSys'].unique())
 
 #speed
 speed =st.selectbox('Speed In GHz',sorted(df['Speed'].unique()))
-
 if st.button('Predict Price'):
-    ppi = None
-    if touchscreen =='Yes':
-        touchscreen=1
-    else :
-       touchscreen =0
-    if ips=='Yes' :
-        ips=1
-    else :
-        ips=0
-    x_resolution = int(resolution.split('x')[0])**2
-    y_resolution = int(resolution.split('x')[1])**2
-    ppi = (x_resolution+y_resolution)**0.5/inch
-    query = np.array([brand,type,cpu,ram,gpu,os,weigth,touchscreen,ips,ppi,speed,hdd,ssd])
-    query=query.reshape(1,13)
     try:
-        # Make prediction
-        prediction = pipe.predict(query)
-        st.success(f"Estimated Laptop Price: ₹{int(prediction[0])}")
+        # Encode touchscreen and IPS
+        touchscreen_val = 1 if touchscreen == 'Yes' else 0
+        ips_val = 1 if ips == 'Yes' else 0
+
+        # Calculate PPI
+        x_res = int(resolution.split('x')[0])
+        y_res = int(resolution.split('x')[1])
+        ppi = ((x_res ** 2 + y_res ** 2) ** 0.5) / inch
+
+        # Prepare input as DataFrame (not NumPy array!)
+        input_df = pd.DataFrame([{
+            'Company': brand,
+            'TypeName': type,
+            'Cpu': cpu,
+            'Ram': ram,
+            'Gpu': gpu,
+            'OpSys': os,
+            'Weight': weigth,
+            'Touchscreen': touchscreen_val,
+            'Ips': ips_val,
+            'Ppi': ppi,
+            'Speed': speed,
+            'HDD': hdd,
+            'SSD': ssd
+        }])
+
+        # Predict (assuming model is trained on log prices)
+        prediction = pipe.predict(input_df)
+        final_price = np.round(np.exp(prediction[0]), 0)
+
+        st.success(f"Estimated Laptop Price: ₹{final_price}")
+        st.title(f"Price For Laptop Will Be Rs. {final_price}")
+
     except Exception as e:
         st.error(f"Error during prediction: {e}")
-    st.title(f'Price For Laptop Will Be Rs. {np.round(np.exp(prediction[0]),0)}')
