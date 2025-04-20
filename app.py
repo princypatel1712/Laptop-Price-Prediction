@@ -2,13 +2,28 @@ import streamlit as st
 import pickle
 import pandas as pd
 import numpy as np
-pipe = pickle.load(open('model.pkl','rb'))
-df = pd.read_csv('clean_data.csv')
 import streamlit as st
 import pickle
 import pandas as pd
 import numpy as np
+import os
 
+# Check if model file exists
+try:
+    if os.path.exists('model.pkl'):
+        pipe = pickle.load(open('model.pkl', 'rb'))
+    else:
+        st.error("Error: model.pkl file not found in the current directory.")
+        st.stop()
+        
+    if os.path.exists('clean_data.csv'):
+        df = pd.read_csv('clean_data.csv')
+    else:
+        st.error("Error: clean_data.csv file not found in the current directory.")
+        st.stop()
+except Exception as e:
+    st.error(f"Error loading required files: {e}")
+    st.stop()
 # Background image using CSS
 import streamlit as st
 
